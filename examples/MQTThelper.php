@@ -46,7 +46,7 @@
 		$mqtt->close();
 	}
 
-	function subscribeAndWait($client_id, $topics, $function_name="procMsg", $debug=false)
+	function subscribeAndWait($client_id, $subs, $debug=false)
 	{
 		$mqtt = mqttconnect($client_id, $debug);
 
@@ -54,12 +54,15 @@
 			return false;
 
 		$sub_topics = array();
-		foreach($topics as $topic)
+		foreach($subs as $sub)
 		{
-			if($debug)
-				echo "Subscribing to $topic\n";
+			foreach($sub["topics"] as $topic)
+			{
+				if($debug)
+					echo "Subscribing to $topic and binding to ${sub['function_name']}\n";
 
-			$sub_topics[$topic] = array("qos" => 1, "function" => $function_name);
+				$sub_topics[$topic] = array("qos" => 1, "function" => $sub["function_name"]);
+			}
 		}
 
 		$mqtt->subscribe($sub_topics, 0);
