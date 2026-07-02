@@ -3,7 +3,7 @@
 require('../phpMQTT.php');
 
 
-$server = 'localhost';     // change if necessary
+$server = "mqtt.example.com";     // change if necessary
 $port = 1883;                     // change if necessary
 $username = '';                   // set your username
 $password = '';                   // set your password
@@ -15,8 +15,8 @@ if(!$mqtt->connect(true, NULL, $username, $password)) {
 }
 
 $mqtt->debug = true;
-
-$topics['bluerhinos/phpMQTT/examples/publishtest'] = array('qos' => 0, 'function' => 'procMsg');
+echo "Connected to mqtt server...\n";
+$topics['#'] = array("qos" => 0, "function" => "procmsg");
 $mqtt->subscribe($topics, 0);
 
 while($mqtt->proc()) {
